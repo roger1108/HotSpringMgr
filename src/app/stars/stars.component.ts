@@ -1,17 +1,31 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter,OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-stars',
   templateUrl: './stars.component.html',
   styleUrls: ['./stars.component.css']
 })
-export class StarsComponent implements OnInit {
+export class StarsComponent implements OnInit, OnChanges {
+
   @Input()
-  public rating: number;
+  public rating: number = 0;
+
+  @Output()
+  private ratingChange: EventEmitter<number> = new EventEmitter();
+
   public stars = [];
+
+  @Input()
+  private readonly:boolean = true;
+
   constructor() {
   }
   ngOnInit() {
+   
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.stars = [];
     const full: number = Math.floor(this.rating);
     const half: number = Math.ceil(this.rating - full);
     const empty: number = 5 - full - half;
@@ -25,4 +39,13 @@ export class StarsComponent implements OnInit {
       }
     }
   }
+  
+  clickStar(index:number){
+    if(!this.readonly){
+      this.rating = index+1;
+      //this.ngOnInit();
+      this.ratingChange.emit(this.rating);
+    }
+  }
+  
 }
