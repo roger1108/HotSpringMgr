@@ -1,3 +1,4 @@
+<!--
 <div class="row">
     <div class ="col-sm-12">
         <div class="form-group">
@@ -6,8 +7,9 @@
         </div>
     </div>
 </div>
-
-<div class="col-sm-4 col-md-4 col-lg-4" *ngFor="let product of products | filter: 'title':keyword">
+-->
+<!-- <div class="col-sm-4 col-md-4 col-lg-4" *ngFor="let product of products | filter: 'title':keyword"> -->
+<div class="col-sm-4 col-md-4 col-lg-4" *ngFor="let product of products | async">              
   <div class="thumbnail">
       <img [src]="imageUrl" alt="商品图片">
       <div class="caption">

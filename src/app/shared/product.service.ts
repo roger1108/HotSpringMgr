@@ -1,9 +1,14 @@
 import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
+import { Observable} from "rxjs";
+import 'rxjs/Rx';
+
 
 @Injectable()
 export class ProductService {
 
-  private products:Product[]= [
+ 
+  /*private products:Product[]= [
     new Product(1, '第一个商品', 1.99, 3.5, '这是第一个商品，是我在学习慕课网Angular入门实战时创建的', ['电子产品']),
     new Product(2, '第二个商品', 2.99, 2.5, '这是第二个商品，是我在学习慕课网Angular入门实战时创建的', ['电子产品', '硬件设备']),
     new Product(3, '第三个商品', 3.99, 4.5, '这是第三个商品，是我在学习慕课网Angular入门实战时创建的', ['电子产品']),
@@ -18,18 +23,26 @@ export class ProductService {
     new Comment(3,1,"2017-04-26 22:22:22","王五",4,"东西很不错"),
     new Comment(4,2,"2017-05-26 22:22:22","赵六",2,"东西非常不错"),
   ]
-  constructor() { }
+ */
+  constructor(private http:Http) { }
 
-  getProducts(){
-    return this.products;
+  getAllCategories(): string[] {
+    return ["电子产品","硬件设备","图书"];
   }
 
-  getProduct(id:number):Product{
-    return this.products.find((product)=>product.id==id);
+  getProducts(): Observable<Product[]>{
+    //return this.products;
+    return this.http.get("/api/products").map(res => res.json());
   }
 
-  getCommentsForProductId(id:number):Comment[]{
-    return this.comments.filter((comment:Comment)=>comment.productId==id);
+  getProduct(id:number):Observable<Product>{
+    //return this.products.find((product)=>product.id==id);
+    return this.http.get("/api/products"+id).map(res => res.json());
+  }
+
+  getCommentsForProductId(id:number):Observable<Comment[]>{
+    //return this.comments.filter((comment:Comment)=>comment.productId==id);
+    return this.http.get("/api/products"+id+"/comments").map(res => res.json());
   }
 
 
