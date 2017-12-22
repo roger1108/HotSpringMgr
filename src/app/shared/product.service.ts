@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable} from "rxjs";
 import 'rxjs/Rx';
+import { URLSearchParams } from '@angular/http';
+import { EventEmitter } from '@angular/core';
 
 
 @Injectable()
@@ -24,6 +26,8 @@ export class ProductService {
     new Comment(4,2,"2017-05-26 22:22:22","赵六",2,"东西非常不错"),
   ]
  */
+  searchEvent: EventEmitter<ProductSearchParams> = new EventEmitter();
+
   constructor(private http:Http) { }
 
   getAllCategories(): string[] {
@@ -32,20 +36,42 @@ export class ProductService {
 
   getProducts(): Observable<Product[]>{
     //return this.products;
-    return this.http.get("/api/products").map(res => res.json());
+    //return this.http.get("/api/products").map(res => res.json());
+    return this.http.get("http://localhost:8080/api/products").map(res => res.json());
+    
   }
 
   getProduct(id:number):Observable<Product>{
     //return this.products.find((product)=>product.id==id);
-    return this.http.get("/api/products"+id).map(res => res.json());
+    return this.http.get("/api/products/"+id).map(res => res.json());
   }
 
   getCommentsForProductId(id:number):Observable<Comment[]>{
     //return this.comments.filter((comment:Comment)=>comment.productId==id);
-    return this.http.get("/api/products"+id+"/comments").map(res => res.json());
+    return this.http.get("/api/products/"+id+"/comments").map(res => res.json());
+  }
+
+  search(params:ProductSearchParams):Observable<Product[]> {
+      return this.http.get("/api/products", {search: this.encodeParams(params)}).map(res => res.json());
   }
 
 
+  private encodeParams(params: ProductSearchParams) {
+    return Object.keys(params)
+    .filter(key  => params[key])
+    .reduce((sum:URLSearchParams, key:string) => {
+      sum.append(key, params[key]);
+      return sum;
+    },new URLSearchParams());
+  }
+
+}
+
+export class ProductSearchParams {
+    constructor(public title:string,
+                public price: number,
+                public category:string
+    ){}
 }
 
 export class Product {
