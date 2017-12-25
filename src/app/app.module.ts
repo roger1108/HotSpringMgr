@@ -16,6 +16,7 @@ import { HomeComponent } from './home/home.component';
 import {Routes, RouterModule} from "@angular/router";
 import { ProductService } from './shared/product.service';
 import { FilterPipe } from './pipe/filter.pipe';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 
 const routes: Routes = [
@@ -47,7 +48,7 @@ const routes: Routes = [
     ReactiveFormsModule
   ],
   exports: [RouterModule],
-  providers: [ProductService],
+  providers: [ProductService, {provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { 

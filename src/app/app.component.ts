@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import * as $ from 'jquery';
+import { environment } from '../environments/environment';
+
 
 
 @Component({
@@ -8,9 +10,9 @@ import * as $ from 'jquery';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
+  title = 'angular入门实战';
 
-  test(){
-    $('xxx').hide();
+  constructor(){
+    console.log("微信号是"+environment.weixinNumber);
   }
 }
