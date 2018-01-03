@@ -21,7 +21,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
-  {path: 'product/:productId', component: ProductDetailComponent}
+  {path: 'hotSpringFindById/:productId', component: ProductDetailComponent}
   
 ];
 

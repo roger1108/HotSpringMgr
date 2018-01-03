@@ -13,17 +13,17 @@
   <div class="thumbnail">
       <img [src]="imageUrl" alt="商品图片">
       <div class="caption">
-          <h4 class="pull-right">
+          <!-- <h4 class="pull-right">
               ￥{{product.price}}
-          </h4>
+          </h4> -->
           <h4>
-              <a [routerLink]="['/product',product.id]">
-                  {{product.title}}
+              <a [routerLink]="['/hotSpringFindById',product.id]">
+                  {{product.name}}
               </a>
           </h4>
-          <p>
+          <!-- <p>
               {{product.desc}}
-          </p>
+          </p> -->
 
       </div>
       <div>

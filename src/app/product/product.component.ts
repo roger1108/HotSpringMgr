@@ -27,16 +27,15 @@ export class ProductComponent implements OnInit {
   }
 
   getStockInfo(value:string){
-    console.log(value);
+    //console.log(value);
    // this.keyword = value;
   }
 
   ngOnInit() {
       this.products = this.productService.getProducts();
-
-      this.productService.searchEvent.subscribe(
-        params => this.products =this.productService.search(params)
-      );
+       this.productService.searchEvent.subscribe(
+         params => this.products = this.productService.search(params)
+       );
   }
 
 }

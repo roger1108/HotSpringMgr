@@ -6,6 +6,7 @@ import { URLSearchParams } from '@angular/http';
 import { EventEmitter } from '@angular/core';
 
 
+
 @Injectable()
 export class ProductService {
 
@@ -26,24 +27,32 @@ export class ProductService {
     new Comment(4,2,"2017-05-26 22:22:22","赵六",2,"东西非常不错"),
   ]
  */
-  searchEvent: EventEmitter<ProductSearchParams> = new EventEmitter();
+ // searchEvent: EventEmitter<ProductSearchParams> = new EventEmitter();
+  searchEvent: EventEmitter<HotSpringSearchParams> = new EventEmitter();
+  
+//addHotSpringIntroEvent: EventEmitter<HotSpringIntroParams> = new EventEmitter();
 
   constructor(private http:Http) { }
 
   getAllCategories(): string[] {
-    return ["电子产品","硬件设备","图书"];
+    return ["山东","福建","北京"];
   }
 
   getProducts(): Observable<Product[]>{
     //return this.products;
     //return this.http.get("/api/products").map(res => res.json());
-    return this.http.get("http://localhost:8080/api/products").map(res => res.json());
+    //console.log( this.http.get("http://localhost:8080/api/products").map(res => res.json()));
+    return this.http.get("http://localhost:8080/api/hotSpringFindAll").map((res) => {
+      //alert(JSON.stringify(res.json().content));
+      return res.json().content;
+    });
     
   }
 
   getProduct(id:number):Observable<Product>{
     //return this.products.find((product)=>product.id==id);
-    return this.http.get("/api/products/"+id).map(res => res.json());
+    //return this.http.get("/api/products/"+id).map(res => res.json());
+    return this.http.get("/api/hotSpringFindById/"+id).map(res => res.json());
   }
 
   getCommentsForProductId(id:number):Observable<Comment[]>{
@@ -51,12 +60,45 @@ export class ProductService {
     return this.http.get("/api/products/"+id+"/comments").map(res => res.json());
   }
 
-  search(params:ProductSearchParams):Observable<Product[]> {
-      return this.http.get("/api/products", {search: this.encodeParams(params)}).map(res => res.json());
+  updateRatingOfHotSpring(id:number,rating:number):any{
+    return this.http.get("/api/updateRatingOfHotSpring/"+rating+"/"+id).map(res => res.json());
+  }
+
+  getHotSpringIntroForProductId(id:number):Observable<HotSpringIntro[]>{
+    //return this.comments.filter((comment:Comment)=>comment.productId==id);
+    return this.http.get("/api/hotSpring/"+id+"/intro").map(res => {
+      //console.log(JSON.stringify(res.json()));
+      return res.json();
+    });
   }
 
 
-  private encodeParams(params: ProductSearchParams) {
+
+  // search(params:ProductSearchParams):Observable<Product[]> {
+  //     return this.http.get("/api/products", {search: this.encodeParams(params)}).map(res => res.json());
+  // }
+
+
+  // private encodeParams(params: ProductSearchParams) {
+  //   return Object.keys(params)
+  //   .filter(key  => params[key])
+  //   .reduce((sum:URLSearchParams, key:string) => {
+  //     sum.append(key, params[key]);
+  //     return sum;
+  //   },new URLSearchParams());
+  // }
+
+  search(params:HotSpringSearchParams):Observable<Product[]> {
+    return this.http.get("/api/hotSprings", {search: this.encodeParams(params)}).map(res => res.json());
+  }
+
+  addHotSpringIntro(params:HotSpringIntro):Observable<HotSpringIntro> {
+    return this.http.post("/api/addHotSpringIntro",null, {search: this.encodeHotSpringIntroAddParams(params)}).map(res => res.json());
+    
+  }
+
+
+  private encodeParams(params: HotSpringSearchParams) {
     return Object.keys(params)
     .filter(key  => params[key])
     .reduce((sum:URLSearchParams, key:string) => {
@@ -64,6 +106,19 @@ export class ProductService {
       return sum;
     },new URLSearchParams());
   }
+
+
+
+  private encodeHotSpringIntroAddParams(params: HotSpringIntro) {
+    return  Object.keys(params)
+    .filter(key  => params[key])
+    .reduce((sum:URLSearchParams, key:string) => {
+      sum.append(key, params[key]);
+      return sum;
+    },new URLSearchParams());
+  }
+
+
 
 }
 
@@ -74,17 +129,39 @@ export class ProductSearchParams {
     ){}
 }
 
-export class Product {
-  constructor(public id: number,
-              public title: string,
-              public  price: number,
-              public rating: number,
-              public desc: string,
-              public categories: Array<string>) {
-  }
-
-
+export class HotSpringSearchParams {
+  constructor(public name:string,
+              public province:string
+  ){}
 }
+
+
+
+// export class Product {
+//   constructor(public id: number,
+//               public title: string,
+//               public  price: number,
+//               public rating: number,
+//               public desc: string,
+//               public categories: Array<string>) {
+//   }
+// }
+
+export class Product {
+  constructor(public id:number,
+              public name:string,
+              public rating :number,
+              public nation:string,
+              public province:string,
+              public city:string,
+              public county:string,
+              public description:string,
+              public imgURL:string,
+              public extend:string ) {
+
+              }
+}
+
 
 export class Comment{
   constructor(public id:number,
@@ -93,6 +170,16 @@ export class Comment{
               public user:string,
               public rating:number,
               public content:string){
+  }
+}
+
+export class HotSpringIntro{
+  constructor(public id:number,
+              public hotSpringId:number,
+              public url:string,
+              public imageUrl: string,
+              public extend: string,
+              public rating: number){
 
   }
 }

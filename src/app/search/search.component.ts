@@ -16,9 +16,9 @@ export class SearchComponent implements OnInit {
   constructor(private productService:ProductService) { 
     let fb  = new FormBuilder();
     this.formModel = fb.group({
-      title: ['', Validators.minLength(3)],
-      price: [null, this.positiveNumberValidator ],
-      category: ['-1']
+      name: ['', Validators.minLength(1)],
+     // price: [null, this.positiveNumberValidator ],
+      province: ['-1']
     });
   }
 
@@ -40,7 +40,7 @@ export class SearchComponent implements OnInit {
 
   onSearch(){
     if(this.formModel.valid){
-      console.log(this.formModel.value);
+      //console.log(this.formModel.value);
       this.productService.searchEvent.emit(this.formModel.value);
     }
   }
