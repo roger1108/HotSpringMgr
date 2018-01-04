@@ -35,14 +35,14 @@ export class ProductService {
   constructor(private http:Http) { }
 
   getAllCategories(): string[] {
-    return ["山东","福建","北京"];
+    return ["北京","天津","上海","重庆","河北","山西","辽宁","吉林","黑龙江","江苏","浙江","安徽","福建","江西","山东","河南","湖北","湖南","广州","海南","四川","贵州","云南","陕西","甘肃","青海","台湾","内蒙古","广西","西藏","宁夏","新疆","香港","澳门"];
   }
 
   getProducts(): Observable<Product[]>{
     //return this.products;
     //return this.http.get("/api/products").map(res => res.json());
     //console.log( this.http.get("http://localhost:8080/api/products").map(res => res.json()));
-    return this.http.get("http://localhost:8080/api/hotSpringFindAll").map((res) => {
+    return this.http.get("/api/hotSpringFindAll").map((res) => {
       //alert(JSON.stringify(res.json().content));
       return res.json().content;
     });
@@ -72,7 +72,11 @@ export class ProductService {
     });
   }
 
-
+  getHotSpringReserveForProductId(id:number):Observable<HotSpringReserve[]>{
+    return this.http.get("/api/hotSpring/"+id+"/reserve").map(res => {
+      return res.json();
+    });
+  }
 
   // search(params:ProductSearchParams):Observable<Product[]> {
   //     return this.http.get("/api/products", {search: this.encodeParams(params)}).map(res => res.json());
@@ -93,10 +97,28 @@ export class ProductService {
   }
 
   addHotSpringIntro(params:HotSpringIntro):Observable<HotSpringIntro> {
-    return this.http.post("/api/addHotSpringIntro",null, {search: this.encodeHotSpringIntroAddParams(params)}).map(res => res.json());
-    
+    return this.http.post("/api/addHotSpringIntro",null, {search: this.encodeHotSpringAddParams(params)}).map(res => res.json());
   }
 
+  addHotSpringReserve(params:HotSpringReserve):Observable<HotSpringReserve> {
+    return this.http.post("/api/addHotSpringReserve",null, {search: this.encodeHotSpringAddParams(params)}).map(res => res.json());
+  }
+
+  addHotSpring(params:Product):Observable<any> {
+    return this.http.post("/api/addHotSpring",null,{search: this.encodeHotSpringAddParams(params)}).map(res => res.json());
+  }
+
+  deleteHotSpring(id:String):Observable<any> {
+    return this.http.get("/api/deleteHotSpring/"+id).map(res => res.json());
+  }
+
+  deleteHotSpringIntro(id:String):Observable<any> {
+    return this.http.get("/api/deleteHotSpringIntro/"+id).map(res => res.json());
+  }
+
+  deleteHotSpringReserve(id:String):Observable<any> {
+    return this.http.get("/api/deleteHotSpringReserve/"+id).map(res => res.json());
+  }
 
   private encodeParams(params: HotSpringSearchParams) {
     return Object.keys(params)
@@ -109,7 +131,8 @@ export class ProductService {
 
 
 
-  private encodeHotSpringIntroAddParams(params: HotSpringIntro) {
+
+  private encodeHotSpringAddParams(params: any) {
     return  Object.keys(params)
     .filter(key  => params[key])
     .reduce((sum:URLSearchParams, key:string) => {
@@ -117,6 +140,7 @@ export class ProductService {
       return sum;
     },new URLSearchParams());
   }
+
 
 
 
@@ -155,6 +179,7 @@ export class Product {
               public province:string,
               public city:string,
               public county:string,
+              public address:string,
               public description:string,
               public imgURL:string,
               public extend:string ) {
@@ -179,7 +204,20 @@ export class HotSpringIntro{
               public url:string,
               public imageUrl: string,
               public extend: string,
-              public rating: number){
+              public rating: number,
+              public name: string,
+              public description:string){
+
+  }
+}
+
+export class HotSpringReserve{
+  constructor(public id:number,
+              public hotSpringId:number,
+              public startPrice:number,
+              public name:string,
+              public url:string,
+              public priority: number){
 
   }
 }

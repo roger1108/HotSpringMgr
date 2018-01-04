@@ -1,0 +1,57 @@
+<div>
+    <br>
+    <button class="btn btn-success" (click)="isCommentHidden = !isCommentHidden">添加温泉企业</button>
+  </div>
+<div [hidden] = "isCommentHidden">
+
+     <form role="form" name="searchForm" [formGroup]="formModel" (ngSubmit)="onAdd()" novalidate>
+        <div class="form-group">
+            <label for="productName" class="control-label">
+                温泉名称 :
+            </label>
+            <input [(ngModel)]="name" formControlName="name" id="productName" type="text" class="form-control" >
+        </div>
+        <div class="form-group"> 
+            <label for="productDesc" class="control-label">
+                温泉简介 :
+            </label>
+            <textarea [(ngModel)]="description" formControlName="description" id="productDesc" type="text" class="form-control"></textarea>
+        </div>
+        <div class="form-group"> 
+            <label for="productProvince" class="control-label">
+                省 :
+            </label>
+            <input [(ngModel)]="province" formControlName="province"  id="productProvince" type="text" class="form-control">    
+        </div>
+        <div class="form-group"> 
+            <label for="productCity" class="control-label">
+                市 :
+            </label>
+            <input [(ngModel)]="city" formControlName="city"  id="productCity" type="text" class="form-control">    
+        </div>
+        <div class="form-group"> 
+            <label for="productDesc" class="control-label">
+                县 :
+            </label>
+            <input [(ngModel)]="county" formControlName="county"  id="productCounty" type="text" class="form-control">    
+        </div>
+
+        <div>
+            <label for="hotSpringAddress" class="control-label">
+                地址 :
+            </label>
+            <textarea [(ngModel)]="address" formControlName="address" id="hotSpringAddress" type="text" class="form-control"></textarea>
+        </div>
+        <br>
+        <div>
+            <label for="hotSpringImgUrl" class="control-label">
+                图片URL :
+            </label>
+            <textarea  [(ngModel)]="imgUrl" formControlName="imgUrl" id="hotSpringImgUrl" type="text" class="form-control"></textarea>
+        </div>
+        <br>
+        <div>
+            <input type="submit" class="btn btn-primary btn-block" value="提交">
+        </div>
+    </form> 
+</div>

@@ -17,11 +17,14 @@ import {Routes, RouterModule} from "@angular/router";
 import { ProductService } from './shared/product.service';
 import { FilterPipe } from './pipe/filter.pipe';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { ProductAddComponent } from './product-add/product-add.component';
+import { HotSpringReserveComponent } from './hot-spring-reserve/hot-spring-reserve.component';
 
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
-  {path: 'hotSpringFindById/:productId', component: ProductDetailComponent}
+  {path: 'hotSpringFindById/:productId', component: ProductDetailComponent},
+  {path: 'hotSpringResFindById/:productId', component: HotSpringReserveComponent}
   
 ];
 
@@ -37,7 +40,9 @@ const routes: Routes = [
     FooterComponent,
     ProductDetailComponent,
     HomeComponent,
-    FilterPipe
+    FilterPipe,
+    ProductAddComponent,
+    HotSpringReserveComponent
     
   ],
   imports: [

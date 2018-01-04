@@ -11,7 +11,7 @@ import { Observable} from "rxjs";
 })
 export class ProductComponent implements OnInit {
  // private products: Array<Product>;
- private products: Observable<Product[]>;
+ private products: Product[];
 
  // private keyword:string;
 
@@ -32,10 +32,36 @@ export class ProductComponent implements OnInit {
   }
 
   ngOnInit() {
-      this.products = this.productService.getProducts();
-       this.productService.searchEvent.subscribe(
-         params => this.products = this.productService.search(params)
-       );
+      this.productService.getProducts().subscribe(
+        products => this.products = products
+      );
+      this.productService.searchEvent.subscribe(
+        params => { this.productService.search(params).subscribe(
+          products => this.products = products
+        )}
+      );
+  }
+
+  deleteHotSpring(productId:string){
+    var msg = "您真的确定要删除吗？\n\n请确认！";
+    if (confirm(msg)==false){
+      return false;
+    }
+
+    this.productService.deleteHotSpring(productId).subscribe( 
+      data=>{
+        console.log(data);
+        alert('删除成功，ok');
+        let numProductId = +productId;
+        this.products = this.products.filter(item=>item.id!=numProductId);
+      },
+      error=>alert("删除失败，error"),
+      () => {
+       // this.products = this.productService.getProducts();
+      }
+    );
+
+    
   }
 
 }

@@ -1,8 +1,13 @@
 <div class="thumbnail">
-  <img src="http://placehold.it/820x230">
+  <!-- <img src="http://placehold.it/820x230"> -->
+  <div class="topicPic">
+    <img [src]="imageUrl" alt="商品图片" onerror="this.src='http://placehold.it/820x230;this.onerror=null'">
+  </div>
   <!-- <h4 class="pull-right">{{product?.price}}元</h4> -->
   <h4>{{product?.name}}</h4>
-  <p>{{product?.desc}}</p>
+  <p>{{product?.description}}</p>
+  <span>{{product?.province}}--{{product?.city}}--{{product?.county}}</span>
+  <p>{{product?.address}}</p>
   <div>
     <p class="pull-right">有{{hotSpringIntros?.length}}篇介绍</p>
     <p>
@@ -12,38 +17,58 @@
 </div>
 
 <div class="well">
-  <div>
-    <button class="btn btn-success" (click)="isCommentHidden = !isCommentHidden">发表评论</button>
-  </div>
-  <div [hidden] = "isCommentHidden">
+  <div class="row">
+    <div class="col-md-12">
+      <div>
+        <button class="btn btn-success" (click)="isCommentHidden = !isCommentHidden">添加介绍</button>
+      </div>
+      <div [hidden]="isCommentHidden">
 
-      <form role="form" name="addForm" [formGroup]="formModel" (ngSubmit)="addComment()" novalidate>
-          <div><app-stars [(rating)]="newRating" [readonly]="false"></app-stars></div>
+        <form role="form" name="addForm" [formGroup]="formModel" (ngSubmit)="addComment()" novalidate>
           <div>
-            温泉介绍网址：<textarea [(ngModel)]="newComment" formControlName="url" id="hotSpringIntroUrl" type="text" class="form-control"></textarea>
+            <app-stars [(rating)]="newRating" [readonly]="false"></app-stars>
           </div>
           <div>
-            温泉头图网址：<textarea [(ngModel)]="newIntroPic" formControlName="imgUrl" id="hotSpringIntroImgUrl" type="text" class="form-control"></textarea>
+              文章名称：<input [(ngModel)]="name" formControlName="name" id="name" type="text" class="form-control" >
           </div>
+          <div>
+              文章简介：<input [(ngModel)]="description" formControlName="description" id="description" type="text" class="form-control" >
+          </div>
+          <div>
+            温泉介绍网址：
+            <textarea [(ngModel)]="newComment" formControlName="url" id="hotSpringIntroUrl" type="text" class="form-control"></textarea>
+          </div>
+          <div>
+            温泉头图网址：
+            <textarea [(ngModel)]="newIntroPic" formControlName="imgUrl" id="hotSpringIntroImgUrl" type="text" class="form-control"></textarea>
+          </div>
+          <br>
           <div>
             <!-- <button class="btn" (click)="addComment()">提交</button> -->
             <input type="submit" class="btn btn-primary btn-block" value="提交">
           </div>
 
-      </form>
+        </form>
 
- 
-  </div>
-  <div class="row" *ngFor="let hotSpringIntro of hotSpringIntros">
-    <hr>
-    <div class="col-md-12">
-      <app-stars [rating]="hotSpringIntro.rating"></app-stars>
-      <span>{{hotSpringIntro.url}}</span>
-      <!-- <span>{{comment.user}}</span> -->
-      <!-- <span class="pull-right">{{comment.timestamp}}</span> -->
-      <p></p>
-      <span>{{hotSpringIntro.imageUrl}}</span>
-      <!-- <p>{{comment.content}}</p> -->
+
+      </div>
+      <div class="row" *ngFor="let hotSpringIntro of hotSpringIntros">
+        <hr>
+        <div class="col-md-12">
+          <app-stars [rating]="hotSpringIntro.rating"></app-stars>
+          <h4 class="pull-right">
+              <button class="btn btn-danger" (click)="deleteIntro(hotSpringIntro.id)">删除</button>
+          </h4>
+          <span>文章名称：{{hotSpringIntro.name}}</span><br>
+          <span>文章简介：{{hotSpringIntro.description}}</span><br>
+          <span>文章地址：{{hotSpringIntro.url}}</span><br>
+          <!-- <span>{{comment.user}}</span> -->
+          <!-- <span class="pull-right">{{comment.timestamp}}</span> -->
+          <span>图片地址：{{hotSpringIntro.imageUrl}}</span>
+          <!-- <p>{{comment.content}}</p> -->
+          
+        </div>
+      </div>
     </div>
   </div>
 </div>

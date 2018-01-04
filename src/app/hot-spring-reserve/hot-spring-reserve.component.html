@@ -1,0 +1,63 @@
+<div class="thumbnail">
+    <img src="http://placehold.it/820x230">
+    <!-- <h4 class="pull-right">{{product?.price}}元</h4> -->
+    <h4>{{product?.name}}</h4>
+    <p>{{product?.description}}</p>
+    <span>{{product?.province}}--{{product?.city}}--{{product?.county}}</span>
+    <p>{{product?.address}}</p>
+    <div>
+      <p class="pull-right">有{{hotSpringIntros?.length}}篇介绍</p>
+      <p>
+        <app-stars [rating]="product?.rating"></app-stars>
+      </p>
+    </div>
+  </div>
+  
+  <div class="well">
+    <div class="row">
+      <div class="col-md-12">
+        <div>
+          <button class="btn btn-success" (click)="isCommentHidden = !isCommentHidden">添加消费</button>
+        </div>
+        <div [hidden]="isCommentHidden">
+  
+          <form role="form" name="addForm" [formGroup]="formModel" (ngSubmit)="addReserve()" novalidate>
+            <div>
+                平台名称<input [(ngModel)]="name" formControlName="name" id="name" type="text" class="form-control" >
+            </div>
+            <div>
+                起始价格<input [(ngModel)]="price" formControlName="price" id="price" type="number" class="form-control" >
+            </div>
+            <div>
+                优先级别<input [(ngModel)]="priority" formControlName="priority" id="priority" type="number" class="form-control" >
+            </div>
+            <div>
+                商品网址：
+              <textarea [(ngModel)]="url" formControlName="url" id="url" type="text" class="form-control"></textarea>
+            </div>
+            
+            <br>
+            <div>
+              <input type="submit" class="btn btn-primary btn-block" value="提交">
+            </div>
+  
+          </form>
+  
+  
+        </div>
+        <div class="row" *ngFor="let hotSpringReserve of hotSpringReserves">
+          <hr>
+          <div class="col-md-12">
+            <h4 class="pull-right">
+                <button class="btn btn-danger" (click)="deleteIntro(hotSpringReserve.id)">删除</button>
+            </h4>
+            <span>平台：{{hotSpringReserve.name}}</span><br>
+            <span>网址：{{hotSpringReserve.url}}</span><br>
+            <span>起始价格：{{hotSpringReserve.startPrice}}</span><br>
+            <span>优先级：{{hotSpringReserve.priority}}</span>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
