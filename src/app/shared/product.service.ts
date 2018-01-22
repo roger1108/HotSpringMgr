@@ -42,9 +42,10 @@ export class ProductService {
     //return this.products;
     //return this.http.get("/api/products").map(res => res.json());
     //console.log( this.http.get("http://localhost:8080/api/products").map(res => res.json()));
-    return this.http.get("/api/hotSpringFindAll").map((res) => {
+    return this.http.get("/api/hotSpringAll").map((res) => {
       //alert(JSON.stringify(res.json().content));
-      return res.json().content;
+      //return res.json().content;
+      return res.json()
     });
     
   }
@@ -72,8 +73,20 @@ export class ProductService {
     });
   }
 
+  getHotSpringIntroById(id:number):Observable<HotSpringIntro>{
+    return this.http.get("/api/hotSpring/intro/"+id).map(res => {
+      return res.json();
+    });
+  }
+
   getHotSpringReserveForProductId(id:number):Observable<HotSpringReserve[]>{
     return this.http.get("/api/hotSpring/"+id+"/reserve").map(res => {
+      return res.json();
+    });
+  }
+
+  getHotSpringReserveById(id:number):Observable<HotSpringReserve>{
+    return this.http.get("/api/hotSpring/reserve/"+id).map(res => {
       return res.json();
     });
   }

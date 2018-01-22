@@ -6,7 +6,7 @@
     <span>{{product?.province}}--{{product?.city}}--{{product?.county}}</span>
     <p>{{product?.address}}</p>
     <div>
-      <p class="pull-right">有{{hotSpringIntros?.length}}篇介绍</p>
+      <p class="pull-right">有{{hotSpringReserves?.length}}篇介绍</p>
       <p>
         <app-stars [rating]="product?.rating"></app-stars>
       </p>
@@ -17,7 +17,7 @@
     <div class="row">
       <div class="col-md-12">
         <div>
-          <button class="btn btn-success" (click)="isCommentHidden = !isCommentHidden">添加消费</button>
+          <button class="btn btn-success" (click)="showAdd()">添加消费</button>
         </div>
         <div [hidden]="isCommentHidden">
   
@@ -49,6 +49,7 @@
           <hr>
           <div class="col-md-12">
             <h4 class="pull-right">
+                <button class="btn btn-warning" (click)="updateIntro(hotSpringReserve.id)">编辑</button>
                 <button class="btn btn-danger" (click)="deleteIntro(hotSpringReserve.id)">删除</button>
             </h4>
             <span>平台：{{hotSpringReserve.name}}</span><br>

@@ -13,6 +13,8 @@ export class ProductDetailComponent implements OnInit {
 
   formModel: FormGroup;
   
+  introId: number;
+
   imageUrl:string;
 
   product: Product;
@@ -77,6 +79,38 @@ export class ProductDetailComponent implements OnInit {
 
   }
 
+  showAdd(){
+    this.isCommentHidden = !this.isCommentHidden;
+    this.newComment = null;
+    this.newIntroPic = null;
+    this.newRating = 5;
+    this.name="";
+    this.description="";
+    this.introId = null;
+  }
+
+  updateIntro(id: number) {
+    this.isCommentHidden = false;
+    this.productService.getHotSpringIntroById(id).subscribe(
+      data => {
+        this.introId= data.id;
+        this.name = data.name;
+        this.newComment = data.url;
+        this.newIntroPic = data.imageUrl;
+        this.newRating = data.rating;
+        this.description = data.description;
+      },
+      error => {
+        window.alert("error"+JSON.stringify(error));
+        console.log(error);
+      },
+      () => {
+      }
+    )
+  }
+
+
+
   deleteIntro(id:string){
     var msg = "您真的确定要删除吗？\n\n请确认！";
     if (confirm(msg)==false){
@@ -108,7 +142,7 @@ export class ProductDetailComponent implements OnInit {
     // this.newRating = 5;
     // this.isCommentHidden = true;
 
-    let hotSpringIntro = new HotSpringIntro(0,this.product.id, this.newComment, this.newIntroPic , "", this.newRating, this.name, this.description);
+    let hotSpringIntro = new HotSpringIntro(this.introId ,this.product.id, this.newComment, this.newIntroPic , "", this.newRating, this.name, this.description);
    
     let sum = this.hotSpringIntros.reduce((sum,hotSpringIntro) => sum + hotSpringIntro.rating, 0);
     this.product.rating = sum / this.hotSpringIntros.length; 
@@ -118,11 +152,13 @@ export class ProductDetailComponent implements OnInit {
     
      this.productService.addHotSpringIntro(hotSpringIntro).subscribe( 
        data=>{
-         alert("添加成功,ok");
+         alert("提交成功,ok");
          hotSpringIntro.id = data.id;
+         let numId = +hotSpringIntro.id;
+         this.hotSpringIntros = this.hotSpringIntros.filter(item => item.id != numId);
          this.hotSpringIntros.unshift(hotSpringIntro);
         },
-      error=>window.alert("添加失败，error"),
+      error=>window.alert("提交失败，error:"+JSON.stringify(error)),
       () => {
       console.log('ok');
       this.productService.updateRatingOfHotSpring(this.product.id,this.product.rating).subscribe(
@@ -137,6 +173,7 @@ export class ProductDetailComponent implements OnInit {
     this.name="";
     this.description="";
     this.isCommentHidden = true;
+    this.introId = null;
   }
 
 }

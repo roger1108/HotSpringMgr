@@ -20,7 +20,8 @@
   <div class="row">
     <div class="col-md-12">
       <div>
-        <button class="btn btn-success" (click)="isCommentHidden = !isCommentHidden">添加介绍</button>
+        <!-- <button class="btn btn-success" (click)="isCommentHidden = !isCommentHidden">添加介绍</button> -->
+        <button class="btn btn-success" (click)="showAdd()">添加介绍</button>
       </div>
       <div [hidden]="isCommentHidden">
 
@@ -57,6 +58,7 @@
         <div class="col-md-12">
           <app-stars [rating]="hotSpringIntro.rating"></app-stars>
           <h4 class="pull-right">
+              <button class="btn btn-warning" (click)="updateIntro(hotSpringIntro.id)">编辑</button>
               <button class="btn btn-danger" (click)="deleteIntro(hotSpringIntro.id)">删除</button>
           </h4>
           <span>文章名称：{{hotSpringIntro.name}}</span><br>

@@ -17,6 +17,8 @@ export class HotSpringReserveComponent implements OnInit {
 
   hotSpringReserves: HotSpringReserve[];
 
+  hotSpringReserveId: number;
+
   priority:number =0;
 
   name:string;
@@ -24,7 +26,6 @@ export class HotSpringReserveComponent implements OnInit {
   url:string;
 
   price:number =0;
-
 
   isCommentHidden = true;
 
@@ -70,12 +71,38 @@ export class HotSpringReserveComponent implements OnInit {
     );
   }
 
+  updateIntro(id: number) {
+    this.isCommentHidden = false;
+    this.productService.getHotSpringReserveById(id).subscribe(
+      data => {
+        this.hotSpringReserveId= data.id;
+        this.price = data.startPrice;
+        this.name = data.name;
+        this.url = data.url;
+        this.priority = data.priority;
+      },
+      error => {
+        window.alert("error"+JSON.stringify(error));
+        console.log(error);
+      },
+      () => {
+      }
+    )
+  }
+
+  showAdd(){
+    this.hotSpringReserveId = null;
+    this.isCommentHidden = !this.isCommentHidden;
+  }
+
   addReserve() {
-    let hotSpringReserve = new HotSpringReserve(null, this.product.id, this.price, this.name,this.url, this.priority);
+    let hotSpringReserve = new HotSpringReserve(this.hotSpringReserveId, this.product.id, this.price, this.name,this.url, this.priority);
     this.productService.addHotSpringReserve(hotSpringReserve).subscribe(
       data => {
-        alert("新增成功,ok");
+        alert("提交成功,ok");
         hotSpringReserve.id = data.id;
+        let numId = +hotSpringReserve.id;
+        this.hotSpringReserves = this.hotSpringReserves.filter(item => item.id != numId);
         this.hotSpringReserves.unshift(hotSpringReserve);
       },
       error => {
@@ -91,6 +118,7 @@ export class HotSpringReserveComponent implements OnInit {
     this.priority =0;
     this.name =null;
     this.isCommentHidden = true;
+    this.hotSpringReserveId = null;
   }
 
 }

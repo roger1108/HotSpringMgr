@@ -21,11 +21,11 @@
           </h4>
           <h4>
               <a [routerLink]="['/hotSpringFindById',product.id]">
-                  {{product.name}}介绍
+                  {{product.name | slice:0:7}}介绍
               </a>
               <p></p>
               <a [routerLink]="['/hotSpringResFindById',product.id]">
-                {{product.name}}消费
+                {{product.name | slice:0:7}}消费
             </a>
           </h4>
           <!-- <p>
