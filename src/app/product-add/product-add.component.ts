@@ -15,7 +15,13 @@ export class ProductAddComponent implements OnInit {
   
     product: Product;
 
+    productId: number;
+
     name:string;
+
+    rating: number =3;
+
+    nation: string = "中华人民共和国";
 
     description:string;
 
@@ -46,19 +52,45 @@ export class ProductAddComponent implements OnInit {
       }
   
     ngOnInit() {
-
+      this.productService.updateEvent.subscribe(
+        params => {
+         // alert(JSON.stringify(params) );
+          this.isCommentHidden = false;
+          this.productId = params.id;
+          this.name = params.name;
+          this.rating = params.rating;
+          this.nation = params.nation;
+          this.province = params.province;
+          this.city = params.city;
+          this.county = params.county;
+          this.address = params.address;
+          this.description = params.description;
+          this.imgUrl = params.imgURL;
+        }
+      );
     }
 
+    showAdd(){
+      this.productId = null;
+      this.isCommentHidden = !this.isCommentHidden;
+   }
+
     onAdd(){
-      let product = new Product(null, this.name, 3 , "中华人民共和国", this.province, this.city, 
+      let product = new Product(this.productId, this.name, this.rating , this.nation, this.province, this.city, 
         this.county, this.address, this.description,this.imgUrl,"");
     
 
       this.productService.addHotSpring(product).subscribe( 
-        data=>{console.log(data);alert('ok')},
+        data=>{
+          console.log(data);
+          alert('ok');
+          //利用service 来控制product组件;
+          this.productService.addEvent.emit(data);
+        },
         error=>alert("error")
         //() => alert('ok')
       )
+      this.productId = null;
       this.product=null;
       this.name=null;   
       this.description=null;  

@@ -29,6 +29,10 @@ export class ProductService {
  */
  // searchEvent: EventEmitter<ProductSearchParams> = new EventEmitter();
   searchEvent: EventEmitter<HotSpringSearchParams> = new EventEmitter();
+
+  addEvent: EventEmitter<Product> = new EventEmitter();
+ 
+  updateEvent: EventEmitter<Product> = new EventEmitter();
   
 //addHotSpringIntroEvent: EventEmitter<HotSpringIntroParams> = new EventEmitter();
 

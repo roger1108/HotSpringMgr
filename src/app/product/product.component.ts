@@ -40,6 +40,19 @@ export class ProductComponent implements OnInit {
           products => this.products = products
         )}
       );
+      this.productService.addEvent.subscribe(
+        params => {
+          //alert(JSON.stringify(params) );
+          this.products = this.products.filter(item => item.id != params.id);
+          this.products.unshift(params);
+        }
+      );
+  }
+
+  updateHotSpring(productId:number){
+    let editProduct = this.products.filter(item => item.id == productId)[0];
+    this.productService.updateEvent.emit(editProduct);
+
   }
 
   deleteHotSpring(productId:string){

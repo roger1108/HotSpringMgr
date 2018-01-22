@@ -1,7 +1,8 @@
 <div>
     <br>
-    <button class="btn btn-success" (click)="isCommentHidden = !isCommentHidden">添加温泉企业</button>
-  </div>
+    <button class="btn btn-success" (click)="showAdd()">添加温泉企业</button>
+</div>
+<br>
 <div [hidden] = "isCommentHidden">
 
      <form role="form" name="searchForm" [formGroup]="formModel" (ngSubmit)="onAdd()" novalidate>
